@@ -61,36 +61,40 @@ function versionCompare(currVer, promoteVer) {
     return false;
 };
 
-//判断是否移动设备
-navigator.isMobile=function(){
-    if (typeof this._isMobile === 'boolean'){
-        return this._isMobile;
-    }
-	
-    var screenWidth = window.screen.width/window.devicePixelRatio;
-    var isMobileScreenSize = screenWidth < 600;
-	
-    this._isMobile = isMobileScreenSize && navigator.isTouchScreen() && navigator.isMobileUserAgent();
-	
-    return this._isMobile;
-}
 
-//判断是否移动设备访问
-navigator.isMobileUserAgent=function(){
-    return (/iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i.test(window.navigator.userAgent.toLowerCase()));
-}
-//判断是否苹果移动设备访问
-navigator.isAppleMobile=function(){
-    return (/iphone|ipod|ipad|Macintosh/i.test(navigator.userAgent.toLowerCase()));
-}
-//判断是否安卓移动设备访问
-navigator.isAndroid=function(){
-    return (/android/i.test(navigator.userAgent.toLowerCase()));
-}
-//判断是否Touch屏幕
-navigator.isTouchScreen=function(){
-    return (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch);
-}
+(function(){
+	//判断是否移动设备
+	navigator.isMobile=function(){
+		if (typeof this._isMobile === 'boolean'){
+			return this._isMobile;
+		}
+		
+		var screenWidth = window.screen.width/window.devicePixelRatio;
+		var isMobileScreenSize = screenWidth < 600;
+		
+		this._isMobile = isMobileScreenSize && navigator.isTouchScreen() && navigator.isMobileUserAgent();
+		
+		return this._isMobile;
+	}
+
+	//判断是否移动设备访问
+	navigator.isMobileUserAgent=function(){
+		return (/iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i.test(window.navigator.userAgent.toLowerCase()));
+	}
+	//判断是否苹果移动设备访问
+	navigator.isAppleMobile=function(){
+		return (/iphone|ipod|ipad|Macintosh/i.test(navigator.userAgent.toLowerCase()));
+	}
+	//判断是否安卓移动设备访问
+	navigator.isAndroid=function(){
+		return (/android/i.test(navigator.userAgent.toLowerCase()));
+	}
+	//判断是否Touch屏幕
+	navigator.isTouchScreen=function(){
+		return (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch);
+	}
+})();
+
 
 //TODO:判断是否为有效数值
 function isNumber(v){
@@ -206,7 +210,6 @@ function formatMoney(number, decimals, dec_point, thousands_sep) {
 }
 
 //设置cookie值
-
 function setCookie(name, value, Hours) {
     var d = new Date();
     var offset = 8;
@@ -217,18 +220,12 @@ function setCookie(name, value, Hours) {
     document.cookie = name + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString() + ";domain=360doc.com;"
 }
 //获取cookie值
-
 function getCookie(name) {
     var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
     if (arr != null) return unescape(arr[2]);
     return null
 }
-//随机数时间戳
 
-function uniqueId(){
-    var a=Math.random,b=parseInt;
-    return Number(new Date()).toString()+b(10*a())+b(10*a())+b(10*a());
-}
 //确认是否键盘有效输入值
 function checkKey(iKey){
     if(iKey == 32 || iKey == 229){return true;}/*空格和异常*/
@@ -242,7 +239,6 @@ function checkKey(iKey){
 }
 
 //判断是否为数字类型
-
 function isDigit(value) {
     var patrn = /^[0-9]*$/;
     if (patrn.exec(value) == null || value == "") {
@@ -251,3 +247,104 @@ function isDigit(value) {
         return true
     }
 }
+
+
+//////////////////////////////////////
+//下面是生成UUID随机数的方法
+//三个方法都绑定到了Math对象上
+//////////////////////////////////////
+/*
+ * 产生一个UUID
+
+ * EXAMPLES:
+ *   // No arguments  - returns RFC4122, version 4 ID
+ *   >>> Math.uuid()
+ *   "92329D39-6F5C-4520-ABFC-AAB64544E172"
+ *
+ *   // One argument - returns ID of the specified length
+ *   >>> Math.uuid(15)     // 15 character ID (default base=62)
+ *   "VcydxgltxrVZSTV"
+ *
+ *   // Two arguments - returns ID of the specified length, and radix. (Radix must be <= 62)
+ *   >>> Math.uuid(8, 2)  // 8 character ID (base=2)
+ *   "01001010"
+ *   >>> Math.uuid(8, 10) // 8 character ID (base=10)
+ *   "47473046"
+ *   >>> Math.uuid(8, 16) // 8 character ID (base=16)
+ *   "098F4D35"
+ */
+(function() {
+	// Private array of chars to use
+	var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+
+	Math.uuid = function (len, radix) {
+		var chars = CHARS, uuid = [], i;
+		radix = radix || chars.length;
+
+		if (len) {
+		  // Compact form
+		  for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+		} else {
+		  // rfc4122, version 4 form
+		  var r;
+
+		  // rfc4122 requires these characters
+		  uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+		  uuid[14] = '4';
+
+		  // Fill in random data.  At i==19 set the high bits of clock sequence as
+		  // per rfc4122, sec. 4.1.5
+		  for (i = 0; i < 36; i++) {
+			if (!uuid[i]) {
+			  r = 0 | Math.random()*16;
+			  uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+			}
+		  }
+		}
+
+		return uuid.join('');
+	};
+
+  // A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
+  // by minimizing calls to random()
+  Math.uuidFast = function() {
+    var chars = CHARS, uuid = new Array(36), rnd=0, r;
+    for (var i = 0; i < 36; i++) {
+      if (i==8 || i==13 ||  i==18 || i==23) {
+        uuid[i] = '-';
+      } else if (i==14) {
+        uuid[i] = '4';
+      } else {
+        if (rnd <= 0x02) rnd = 0x2000000 + (Math.random()*0x1000000)|0;
+        r = rnd & 0xf;
+        rnd = rnd >> 4;
+        uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+      }
+    }
+    return uuid.join('');
+  };
+
+  // A more compact, but less performant, RFC4122v4 solution:
+  Math.uuidCompact = function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  };
+	// Generate four random hex digits.
+	function S4() {
+	   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	};
+	// Generate a pseudo-GUID by concatenating random hexadecimal.
+	Math.guid=function() {
+	   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+	};
+	
+	//随机数时间戳
+	Math.uniqueId=function(){
+		var a=Math.random,b=parseInt;
+		return Number(new Date()).toString()+b(10*a())+b(10*a())+b(10*a());
+	}
+})();
+
+
