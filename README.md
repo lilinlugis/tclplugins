@@ -1,11 +1,15 @@
 <h3>简介</h3>
 <p>本套代码是整理收集加上自己开发扩展的前端快速开发库，基于jQuery和Bootstrap面向企业信息系统提供前端基础功能支持，包括一些常用工具、扩展方法、UI组件等。</p>
-1、引入jquery
-2、引入bootstrap
-3、引入responsivegrid
-4、调用
-<h3>responsivegrid</h3>
+<p>包括字符串处理、常用方法、正则表达式、加解密、HTML处理、响应式表格、弹出框等</p>
+<h3>响应式表格</h3>
 <h4>//使用样例：</h4>
+<ul>
+	<li>1、引入jquery</li>
+	<li>2、引入bootstrap</li>
+	<li>3、引入responsivegrid</li>
+	<li>4、调用</li>
+</ul>
+
 <pre>
 	$(function(){
 		$("#myTable").responsivegrid({
