@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+.wordbreakall{word-break: break-all;}
+
+.first.disabled a,
+.next.disabled a,
+.previous.disabled a,
+.last.disabled a,
+.pageli.disabled a,
+.first.disabled a:hover,
+.next.disabled a:hover,
+.previous.disabled a:hover,
+.last.disabled a:hover,
+.pageli.disabled a:hover{
+    background: #f2f2f2;
+    border-color: #dfdfdf;
+}
+
+.pager-size-sel,.pager-tip{
+    padding: 2px 0 2px 0;   
+	font-style: italic;
+    height: 30px;
+    line-height: 30px;
+}
+.pager-size-sel select{
+    width: 45px;
+    line-height: 30px;
+    height: 30px;
+}
+tr.text-center th{text-align: center;}
+/*蓝色表头，请设置primary*/
+.table>tbody>tr.primary>td, .table>tbody>tr.primary>th, .table>tbody>tr>td.primary, .table>tbody>tr>th.primary, .table>tfoot>tr.primary>td, .table>tfoot>tr.primary>th, .table>tfoot>tr>td.primary, .table>tfoot>tr>th.primary, .table>thead>tr.primary>td, .table>thead>tr.primary>th, .table>thead>tr>td.primary, .table>thead>tr>th.primary {
+    background-color: #337ab7;
+    color: #fff;
+}
+/*黑色表头，请设置gray*/
+.table>tbody>tr.gray>td, .table>tbody>tr.gray>th, .table>tbody>tr>td.gray, .table>tbody>tr>th.gray, .table>tfoot>tr.gray>td, .table>tfoot>tr.primary>th, .table>tfoot>tr>td.gray, .table>tfoot>tr>th.gray, .table>thead>tr.gray>td, .table>thead>tr.gray>th, .table>thead>tr>td.gray, .table>thead>tr>th.gray {
+	background-color: #efefef;
+    background: -webkit-linear-gradient(top,#F9F9F9 0,#efefef 100%);
+    background: -moz-linear-gradient(top,#F9F9F9 0,#efefef 100%);
+    background: -o-linear-gradient(top,#F9F9F9 0,#efefef 100%);
+    background: linear-gradient(to bottom,#F9F9F9 0,#efefef 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F9F9F9,endColorstr=#efefef,GradientType=0);
+}
+/*去掉分页器上边距*/
+.pagination{margin: 0;}
+.table .rowIndex{
+	background:#e9e8e8!important;
+	    vertical-align: middle;
+}
+@media (max-width:992px){
+	.xshidden{
+		display:none;
+	}
+	.center-xs{
+		text-align:center;
+	}
+}
